@@ -1,9 +1,16 @@
-let todos = [
-  {
-    id: 1,
-    description: "Subir a Esmeralda",
-    isComplete: false,
-  },
-];
+const mongoose = require("mongoose");
 
-module.exports = todos;
+const todoSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    is_completed: { type: Boolean, required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const Todo = mongoose.model("Todo", todoSchema);
+
+module.exports = Todo;

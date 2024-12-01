@@ -1,9 +1,16 @@
+require("dotenv").config();
+
 const express = require("express");
+
 const todoRoutes = require("./routes/todoRoutes");
+
+const { connectMongoDb } = require("./config/db/connectDb");
 
 const app = express();
 
 const port = 4000;
+
+connectMongoDb();
 
 app.use(express.json());
 
