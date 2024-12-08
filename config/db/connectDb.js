@@ -3,8 +3,9 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 
 const connectMongoDb = async () => {
+  console.log(process.env.MONGODB_URL);
   try {
-    mongoose.connect("mongodb://localhost:27017/todo_list", {
+    mongoose.connect(process.env.MONGODB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
