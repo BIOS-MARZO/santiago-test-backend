@@ -1,74 +1,53 @@
-Requisitos
+#BackEnd Todo
+<p>
+Backtodo es una aplicación backend para la gestión de tareas, desarrollada en Node.js con Express y MongoDB. Esta aplicación permite gestionar tareas a través de una API conectada a una base de datos MongoDB ejecutada en un contenedor Docker.
+</p>
 
+##Requisitos
+
+<p>
 Asegúrate de tener instalados los siguientes programas en tu máquina:
+</p>
+- Node.js (versión 14 o superior)
+- Docker.
+- MongoDB Compass (opcional, para gestionar la base de datos gráficamente)
 
-Node.js (versión 14 o superior)
-
-Docker y Docker Compose
-
-MongoDB Compass (opcional, para gestionar la base de datos gráficamente)
-
-Instalación
-
-Clona este repositorio en tu máquina local:
-
-git clone <URL_DEL_REPOSITORIO>
-cd backtodo
-
-Instala las dependencias del proyecto:
-
+###Instalación
+- Clona el repositorio en tu equipo
+```
+git clone <URL_del_Repositorio>
+```
+- Instala las Dependencias del Proyecto
+```
 npm install
+```
 
-Crea un archivo .env en la raíz del proyecto con las siguientes variables de entorno:
+- Crea un archivo .env para tus variables de entorno 
+```
+PORT:3000
+MONGO_URI=<URL_DE_TU_BD>
+JWT_SECRET=TU_CLAVE_SECRETA_PARA_JWR
+```
+- Crea un contenedor de Docker con la imagen de MondoDB
 
-PORT=3000
-MONGO_URI=mongodb://localhost:27017/backtodo
-JWT_SECRET=tu_secreto_para_jwt
+- Abre MongoCompas y coloca tu URL para acceder a la BD
 
-Configura el contenedor Docker para MongoDB. Crea un archivo docker-compose.yml en la raíz del proyecto con el siguiente contenido:
+## Uso
 
-version: '3.8'
-services:
-  mongodb:
-    image: mongo:6
-    container_name: mongodb
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
-volumes:
-  mongodb_data:
+- Inicia el Servidor con el comando:
 
-Inicia el contenedor Docker:
-
-docker-compose up -d
-
-Abre MongoDB Compass y conecta a mongodb://localhost:27017. Crea una base de datos llamada backtodo si no existe.
-
-Uso
-
-Inicia el servidor en modo desarrollo:
-
+```
 npm run dev
+```
 
-El servidor estará disponible en http://localhost:3000.
-
-Usa una herramienta como Postman o Insomnia para interactuar con las rutas de la API.
-
-Scripts disponibles
-
-npm run dev: Inicia la aplicación en modo desarrollo con Nodemon.
-
-Dependencias
-
-bcryptjs: Para encriptación de contraseñas.
-
-cors: Para manejar políticas de origen cruzado.
-
-dotenv: Para cargar variables de entorno desde un archivo .env.
-
-express: Framework para crear el servidor.
-
-jsonwebtoken: Para manejar autenticación basada en tokens.
-
-mongoose: ORM para interactuar con MongoDB.
+##Dependencias
+<ul>
+<p>
+<li>bcryptjs: Para encriptación de contraseñas</li>
+<li>cors: Para manejar Politicas de origen cruzado</li>
+<li>dotenv: Para cargar variables de entorno</li>
+<li>express: Framework para crear el servidor</li>
+<li>jsonwebtoken: Para manejar authenticacion basada en tokens</li>
+<li>mongoose: ORM para interactuar con MongoDB</li>
+</p>
+</ul>
