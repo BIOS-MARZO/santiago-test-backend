@@ -2,11 +2,31 @@ const Todo = require("../models/todoModel");
 
 const getAllTodos = async (req, res) => {
   try {
-    const tasks = await Todo.find(); // Consulta todas las tareas
+    const creatorId = req.user.user;
+    console.log("Token recibido:", creatorId);
+
+    if (!creatorId) {
+      return res.status(400).json({
+        status: "error",
+        message: "ID de creador no encontrado",
+      });
+    }
+
+    const tasks = await Todo.find({ creator: creatorId });
+
+    if (tasks.length === 0) {
+      return res.status(404).json({
+        status: "ok",
+        message: "No hay tareas para este usuario.",
+        data: [],
+      });
+    }
+
     res.json({
       status: "ok",
       data: tasks,
     });
+    console.log("Tareas encontradas:", tasks);
   } catch (error) {
     console.error("Error al obtener las tareas:", error);
     res.status(500).json({
@@ -42,22 +62,34 @@ const getTodoById = async (req, res) => {
   }
 };
 const createTodo = async (request, response) => {
-  const { title, description, is_completed } = request.body;
+  const { title, description, status } = request.body;
   try {
+    const creatorId = request.user.user; // Asegúrate de que esto esté correcto
+    console.log("Creator ID:", creatorId); // Verifica que el ID del creador esté presente
+
+    if (!creatorId) {
+      return response.status(400).json({
+        status: "error",
+        message: "ID del creador no encontrado",
+      });
+    }
+
     const newTask = new Todo({
       title,
       description,
-      is_completed,
+      status,
+      creator: creatorId,
     });
 
     await newTask.save();
+
     response.status(201).json({
       status: "Ok",
-      message: "Task creada correctamente",
+      message: "Tarea creada correctamente",
       data: newTask,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error al crear la tarea:", error);
     response.status(500).json({
       status: "error",
       message: "Error al crear la tarea",
@@ -67,7 +99,7 @@ const createTodo = async (request, response) => {
 
 const updateTodo = async (req, res) => {
   const { id } = req.params; // ID de la tarea que se pasa por la URL
-  const { title, description, is_completed } = req.body; // Campos a actualizar (pueden ser sólo algunos)
+  const { title, description, status } = req.body;
 
   try {
     // Creamos un objeto vacío para almacenar los cambios
@@ -76,7 +108,7 @@ const updateTodo = async (req, res) => {
     // Añadimos al objeto de actualización solo los campos que han sido proporcionados
     if (title) updateFields.title = title;
     if (description) updateFields.description = description;
-    if (is_completed !== undefined) updateFields.is_completed = is_completed; // Asegurarse de que sea `undefined` en vez de `null`
+    if (status !== undefined) updateFields.status = status; // Asegurarse de que sea `undefined` en vez de `null`
 
     // Si no se pasan campos para actualizar, enviamos un error
     if (Object.keys(updateFields).length === 0) {
@@ -98,7 +130,7 @@ const updateTodo = async (req, res) => {
       });
     }
 
-    res.json({
+    res.status(200).json({
       status: "OK",
       message: "Tarea actualizada correctamente",
       data: updatedTask,
@@ -116,7 +148,7 @@ const deleteTodo = async (request, response) => {
   const { id } = request.params;
 
   try {
-    const deletedTask = await Todo.findByIdAndDelete(id); // Busca y elimina la tarea por su ID
+    const deletedTask = await Todo.findByIdAndDelete(id);
 
     if (!deletedTask) {
       return response.status(404).json({
@@ -125,16 +157,58 @@ const deleteTodo = async (request, response) => {
       });
     }
 
-    response.status(200).json({
+    return response.status(200).json({
       status: "OK",
       message: "Tarea Eliminada Satisfactoriamente",
-      data: deletedTask, // Aquí debes usar deletedTask
     });
   } catch (error) {
     console.error("Error al eliminar la tarea:", error);
-    response.status(500).json({
+    return response.status(500).json({
       status: "error",
       message: "Error al eliminar la tarea",
+      error: error.message,
+    });
+  }
+};
+
+const updateTaskStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const validStatuses = ["pendientes", "en proceso", "completadas"];
+  if (!status || !validStatuses.includes(status)) {
+    return res.status(400).json({
+      status: "error",
+      message: `El estado proporcionado no es válido. Los estados válidos son: ${validStatuses.join(
+        ", "
+      )}.`,
+    });
+  }
+
+  try {
+    const updatedTask = await Todo.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+
+    if (!updatedTask) {
+      return res.status(404).json({
+        status: "error",
+        message: "La tarea no existe.",
+      });
+    }
+
+    res.status(200).json({
+      status: "OK",
+      message: "Estado de la tarea actualizado correctamente",
+      data: updatedTask,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "error",
+      message: "Error al actualizar el estado de la tarea.",
     });
   }
 };
@@ -145,4 +219,5 @@ module.exports = {
   createTodo,
   updateTodo,
   deleteTodo,
+  updateTaskStatus,
 };
