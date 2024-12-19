@@ -18,10 +18,13 @@ Asegúrate de tener instalados los siguientes programas en tu máquina:
 Instalación
 </h2>
 - Clona el repositorio en tu equipo
+
 ```
 git clone <URL_del_Repositorio>
 ```
+
 - Instala las Dependencias del Proyecto
+  
 ```
 npm install
 ```
