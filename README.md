@@ -1,9 +1,11 @@
-#BackEnd Todo
+<h1>BackEnd Todo</h1>
 <p>
 Backtodo es una aplicación backend para la gestión de tareas, desarrollada en Node.js con Express y MongoDB. Esta aplicación permite gestionar tareas a través de una API conectada a una base de datos MongoDB ejecutada en un contenedor Docker.
 </p>
 
-##Requisitos
+<h2>
+Requisitos
+</h2>
 
 <p>
 Asegúrate de tener instalados los siguientes programas en tu máquina:
@@ -12,7 +14,9 @@ Asegúrate de tener instalados los siguientes programas en tu máquina:
 - Docker.
 - MongoDB Compass (opcional, para gestionar la base de datos gráficamente)
 
-###Instalación
+<h2>
+Instalación
+</h2>
 - Clona el repositorio en tu equipo
 ```
 git clone <URL_del_Repositorio>
@@ -32,7 +36,9 @@ JWT_SECRET=TU_CLAVE_SECRETA_PARA_JWR
 
 - Abre MongoCompas y coloca tu URL para acceder a la BD
 
-## Uso
+<h2>
+Uso
+</h2>
 
 - Inicia el Servidor con el comando:
 
@@ -40,7 +46,9 @@ JWT_SECRET=TU_CLAVE_SECRETA_PARA_JWR
 npm run dev
 ```
 
-##Dependencias
+<h2>
+Dependencias
+</h2>
 <ul>
 <p>
 <li>bcryptjs: Para encriptación de contraseñas</li>
