@@ -51,7 +51,7 @@ Inicia el servidor en modo desarrollo:
 
 npm run dev
 
-El servidor estará disponible en http://localhost:5000.
+El servidor estará disponible en http://localhost:3000.
 
 Usa una herramienta como Postman o Insomnia para interactuar con las rutas de la API.
 
